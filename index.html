@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Product Category Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background: linear-gradient(135deg,#6a11cb,#2575fc,#ff6a00);
+background-size:400% 400%;
+animation:bg 8s infinite alternate;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+100%{background-position:100% 50%;}
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:15px;
+width:420px;
+box-shadow:0 15px 40px rgba(0,0,0,0.3);
+text-align:center;
+}
+
+h1{
+margin-bottom:25px;
+color:#333;
+}
+
+label{
+font-weight:600;
+display:block;
+text-align:left;
+margin-top:10px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:8px;
+border-radius:8px;
+border:1px solid #ddd;
+outline:none;
+}
+
+textarea{
+resize:none;
+height:90px;
+}
+
+button{
+margin-top:20px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+font-size:16px;
+font-weight:bold;
+color:white;
+cursor:pointer;
+background:linear-gradient(45deg,#ff416c,#ff4b2b);
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+.result{
+margin-top:20px;
+background:#111;
+color:#00ff9c;
+padding:15px;
+border-radius:8px;
+font-family:monospace;
+text-align:left;
+font-size:13px;
+max-height:200px;
+overflow:auto;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🤖 AI Product Category Generator</h1>
+
+<label>Product Name</label>
+<input id="name" placeholder="Example: Bamboo Toothbrush">
+
+<label>Description</label>
+<textarea id="desc" placeholder="Eco friendly biodegradable toothbrush"></textarea>
+
+<button onclick="generate()">✨ Generate AI Tags</button>
+
+<div class="result" id="result">
+Result will appear here...
+</div>
+
+</div>
+
+<script>
+
+async function generate(){
+
+let name=document.getElementById("name").value
+let desc=document.getElementById("desc").value
+
+let res=await fetch("http://127.0.0.1:5000/generate",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({name:name,description:desc})
+})
+
+let data=await res.json()
+
+document.getElementById("result").innerText =
+JSON.stringify(data,null,2)
+
+}
+
+</script>
+
+</body>
+</html>
