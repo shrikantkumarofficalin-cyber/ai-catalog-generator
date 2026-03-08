@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from ai_module import generate_ai_tags
 from database import init_db, save_product
+import os
 
 app = Flask(__name__)
 
@@ -8,7 +9,7 @@ app = Flask(__name__)
 init_db()
 
 
-# Home route so browser does not show Not Found
+# Home route
 @app.route("/")
 def home():
     return """
@@ -22,7 +23,7 @@ def home():
 @app.route("/generate", methods=["GET", "POST"])
 def generate():
 
-    # Show simple HTML form
+    # Show HTML form
     if request.method == "GET":
         return """
         <h3>AI Product Category Generator</h3>
@@ -38,7 +39,7 @@ def generate():
         </form>
         """
 
-    # POST request
+    # Handle POST request
     if request.is_json:
         data = request.get_json()
         name = data.get("name")
@@ -47,10 +48,14 @@ def generate():
         name = request.form.get("name")
         description = request.form.get("description")
 
+    # Validate input
+    if not name or not description:
+        return jsonify({"error": "Product name and description required"}), 400
+
     # Generate AI tags
     ai = generate_ai_tags(name, description)
 
-    # Save to database
+    # Save product in database
     save_product(
         name,
         ai["category"],
@@ -64,7 +69,5 @@ def generate():
 
 if __name__ == "__main__":
     print("Starting AI Catalog Server...")
-    print("Open browser: http://127.0.0.1:5000")
-    print("Test form: http://127.0.0.1:5000/generate")
-
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
