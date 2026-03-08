@@ -54,6 +54,17 @@ pip install -r requirements.txt
 python app.py
 ```
 
+TEST  (project )  input
+Product Name:
+Wireless Bluetooth Headphones
+
+Description:
+High-quality wireless headphones with noise cancellation and long battery life.
+
+3️⃣ Click Generate
+
+The system will automatically generate category and tags.
+
 4. Open in browser
 ```
 http://127.0.0.1:5000
